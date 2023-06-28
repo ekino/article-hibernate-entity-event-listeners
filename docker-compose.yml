@@ -1,0 +1,12 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:11.20-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: test_db
+      POSTGRES_USER: test_usr
+      POSTGRES_PASSWORD: some_pwd
+    command: "postgres -c fsync=false -c full_page_writes=false -c synchronous_commit=false"

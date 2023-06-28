@@ -1,0 +1,15 @@
+vars:
+  database:
+    host: ${DB_MAIN_HOST:localhost}
+    port: ${DB_MAIN_PORT:5432}
+    db-name: ${DB_NAME:test_db}
+    schema-name: ${DB_SCHEMA_NAME:public}
+    username: ${DB_USERNAME:test_usr}
+    password: ${DB_PASSWORD:some_pwd}
+
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://${vars.database.host}:${vars.database.port}/${vars.database.db-name}?currentSchema=${vars.database.schema-name}
+    username: ${vars.database.username}
+    password: ${vars.database.password}
