@@ -1,0 +1,23 @@
+[versions]
+kotlin = "1.9.0"
+spring-boot = "2.7.13"
+spring-boot-deps-management = "1.0.15.RELEASE"
+kotlin-logging = "4.0.1"
+assertk = "0.26.1"
+
+[libraries]
+spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+h2 = { module = "com.h2database:h2" }
+# Tests
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+kotlin-plugin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
+
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-boot-deps = { id = "io.spring.dependency-management", version.ref = "spring-boot-deps-management" }

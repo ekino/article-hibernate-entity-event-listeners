@@ -1,34 +1,44 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+// Versions are defined in `gradle/libs.versions.toml`
+// See https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
+
 plugins {
-  id("org.springframework.boot") version "2.7.13"
-  id("io.spring.dependency-management") version "1.0.15.RELEASE"
-  val kotlinVersion = "1.8.22"
-  kotlin("jvm") version kotlinVersion
-  kotlin("plugin.spring") version kotlinVersion
-  kotlin("plugin.jpa") version kotlinVersion
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.kotlin.plugin.spring)
+  alias(libs.plugins.kotlin.plugin.jpa)
+  alias(libs.plugins.spring.boot)
+  alias(libs.plugins.spring.boot.deps)
 }
 
 group = "com.ekino.example"
 version = "0.0.1-SNAPSHOT"
-
-val javaVersion = JavaVersion.VERSION_11
-
-java {
-  sourceCompatibility = javaVersion
-}
 
 repositories {
   mavenCentral()
 }
 
 dependencies {
-  implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-  implementation("org.flywaydb:flyway-core")
-  implementation("org.jetbrains.kotlin:kotlin-reflect")
-  runtimeOnly("org.postgresql:postgresql")
+  implementation(libs.spring.boot.starter.data.jpa)
+  implementation(libs.kotlin.reflect)
+  implementation(libs.kotlin.logging)
+  runtimeOnly(libs.h2)
 
-  testImplementation("org.springframework.boot:spring-boot-starter-test")
+  testImplementation(libs.spring.boot.starter.test)
+  testImplementation(libs.assertk)
+}
+
+allOpen {
+  annotation("javax.persistence.Entity")
+  annotation("javax.persistence.MappedSuperclass")
+  annotation("javax.persistence.Embeddable")
+}
+
+val javaVersion = JavaVersion.VERSION_11
+
+java {
+  sourceCompatibility = javaVersion
 }
 
 tasks {
@@ -41,5 +51,12 @@ tasks {
 
   withType<Test> {
     useJUnitPlatform()
+    testLogging {
+      events = setOf(
+        TestLogEvent.PASSED,
+        TestLogEvent.FAILED,
+        TestLogEvent.STANDARD_OUT,
+      )
+    }
   }
 }
